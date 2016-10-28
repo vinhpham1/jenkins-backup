@@ -1,0 +1,20 @@
+## jenkins backup jobs
+
+Description:
+- Using bash shell to cope all folders and files of jenkins home into /data
+
+Step:
+- Set $JENKINS_HOME=/var/lib/jenkins (on debian)
+- Create /data/ and change mode
+- Create jenkins-backup-daily with free-style 
+- Configure jenkins-backup-job
+	+ set git source: https://github.com/vinhpham1/jenkins-backup-script.git
+	+ set time: * * * * *
+	+ build:
+		execute shell: /var/lib/jenkins-backup.sh $JENKINS_HOME /data/backup_`date +"%Y%m%d%H%M%S"`.tar.gz
+- rotate backup files: find /data/backup_* -mtime +1 -delete 
+(delete backup files over 1 days ago)
+
+- create /data/jenkins-restore.sh
+
+Git repo: https://github.com/vinhpham1/jenkins-backup-script.git
